@@ -43,17 +43,8 @@ app.post("/register", async (req, res, next) => {
 });
 app.post("/createbook", async (req, res, next) => {
     let book =await Book.insertMany([req.body])
-    // userid  :req.body.userid,
-    // commentid  : [
-    //     {
-    //         type:mongoose.Schema.Types.ObjectId,
-    //         ref:'comment'
-    //     }
-    // ],
+    
    
-    // likes: { type: Number,default:0 },
-    // coverImage: { type: String, required:true, min:1,max:1  },
-    // content: { type: String,  required:true },
 
 res.send(book)
 
@@ -61,7 +52,28 @@ res.send(book)
 app.post("/createcomment", (req, res, next) => {
   res.send("Your app is ready");
 });
-app.post("/login", (req, res, next) => {
-  res.send("Your app is ready");
+app.post("/login", async (req, res, next) => {
+    let userData = {
+        email: req.body.email,
+        
+      }
+    
+      let email = req.body.email
+     
+      let response1 = await user.findOne({ email })
+     
+        if (response1) {
+            
+            res.status(200).json(response1 )
+        } 
+        else {
+          
+    
+         res.status(401).json({
+           status: false,
+           message:"Invalid credentials"
+         })
+          
+        }
 });
 module.exports = app;
